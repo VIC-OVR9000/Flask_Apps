@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% block content %}
+    <ul class="task-list">
+        {% for item in fa.payload %}
+            <li><input type="checkbox"> {{ item }}</li>
+        {% endfor %}
+    </ul>
+{% endblock %}

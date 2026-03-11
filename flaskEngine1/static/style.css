@@ -1,0 +1,31 @@
+.engine-block {
+    border: 2px solid #333;
+    margin-bottom: 30px;
+    padding: 15px;
+    background: #fdfdfd;
+}
+
+.engine-block h3 {
+    margin-top: -25px; /* Pulls the title up into the border line */
+    background: #fff;
+    display: inline-block;
+    padding: 0 10px;
+    font-size: 0.9rem;
+    color: #666;
+    text-transform: uppercase;
+}
+
+.grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.module {
+    border: 1px solid #ccc;
+    padding: 10px;
+    min-width: 150px;
+    transition: 0.2s ease;
+}
+
+.module:hover { border-color: #000; background: #f0f0f0; }

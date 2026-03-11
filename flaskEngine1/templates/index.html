@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Master Hub</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+    <h1>Master Logic Hub</h1>
+    <hr>
+
+    {# The 'engines' variable is now provided by the Flask route #}
+    {% for engine in engines %}
+        <section class="engine-block">
+            <h3>System: {{ engine }}</h3>
+            <div class="grid">
+                {% for id, page in registry.items() %}
+                    {% if page.engine == engine %}
+                        <div class="module">
+                            <a href="/fa/{{ id }}">
+                                <strong>{FA_{{ id }}}</strong><br>
+                                {{ page.title }}
+                            </a>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </section>
+    {% endfor %}
+   </div>
+</body>
+</html>

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ fa.title }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <span class="symbol">{FA_{{ id }}}</span>
+            <h1>{{ fa.title }}</h1>
+        </header>
+
+        <section class="module-view">
+            {% block content %}{% endblock %}
+        </section>
+
+        <a href="/" class="back-link">← Return to Hub Logic</a>
+    </div>
+</body>
+</html>
