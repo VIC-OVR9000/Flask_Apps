@@ -7,7 +7,7 @@ fa_registry = {
     "1": {
         "engine": "flaskApp1.py", # Options Logic
         "temp": "grid.html", 
-        "title": "USAR Strategy", 
+        "title": "XXXX Strategy", 
         "payload": {"Price": 22.85, "Target": 30.00, "IV": "High"}
     },
     "2": {
