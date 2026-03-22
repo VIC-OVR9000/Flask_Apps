@@ -1,0 +1,48 @@
+.engine-block {
+    border: 2px solid #333;
+    margin-bottom: 30px;
+    padding: 15px;
+    background: #fdfdfd;
+}
+
+.engine-block h3 {
+    margin-top: -25px; /* Pulls the title up into the border line */
+    background: #fff;
+    display: inline-block;
+    padding: 0 10px;
+    font-size: 0.9rem;
+    color: #666;
+    text-transform: uppercase;
+}
+
+.grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.module {
+    border: 1px solid #ccc;
+    padding: 10px;
+    min-width: 150px;
+    transition: 0.2s ease;
+}
+
+.module:hover { border-color: #000; background: #f0f0f0; }
+
+
+.indicator {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin-right: 8px;
+    border: 1px solid #333;
+}
+
+/* Logic for Status Colors */
+.engine-block.online .indicator { background: #2ecc71; box-shadow: 0 0 5px #2ecc71; }
+.engine-block.offline .indicator { background: #e74c3c; box-shadow: 0 0 5px #e74c3c; }
+
+.engine-block.offline { opacity: 0.7; border-style: dashed; }
+.engine-block.offline .module a { pointer-events: none; color: #999; }
