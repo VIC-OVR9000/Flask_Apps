@@ -91,3 +91,6 @@ Navigate to **`http://127.0.0.1:5005`** in your browser to access the Ledger.
 
 ## 🤝 Contributing
 Feel free to fork this project, submit pull requests, or open issues to suggest new features (like strict UI type-checking, data visualization dashboards, or live API scraping integrations).
+
+
+This Repository, the contents and application of it, are (copyright) Samuel Victor Flores 2026
