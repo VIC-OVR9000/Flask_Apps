@@ -93,4 +93,4 @@ Navigate to **`http://127.0.0.1:5005`** in your browser to access the Ledger.
 Feel free to fork this project, submit pull requests, or open issues to suggest new features (like strict UI type-checking, data visualization dashboards, or live API scraping integrations).
 
 
-This The Code and Application/File Structure are (copyright) Samuel Victor Flores 2026
+This Code and Application/File Structure are (copyright) Samuel Victor Flores 2026
