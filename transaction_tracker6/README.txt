@@ -59,7 +59,7 @@ pip install flask pandas
 ```
 
 ### 2. Customize Your Engine (Optional)
-Open `app.py` and modify the `SCHEMA_GROUPS` and `APP_TITLE` variables to fit your specific use case. (It comes pre-loaded with a Real Estate Tax Ledger template).
+Open `app.py` and modify the `SCHEMA_GROUPS` and `APP_TITLE` variables to fit your specific use case. (It comes pre-loaded with an IT Ticket log template).
 
 ### 3. Forge the Vault
 Run the database initialization script. This will read your `app.py` file and generate a `dynamic_vault.db` file in the same directory.
