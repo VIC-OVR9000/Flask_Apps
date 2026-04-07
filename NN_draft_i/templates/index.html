@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<body>
+    <canvas id="canvas" width="280" height="280" style="border:1px solid #000; background: black;"></canvas>
+    <button onclick="send()">Predict Letter</button>
+    <h1 id="res"></h1>
+
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        ctx.strokeStyle = "white";
+        ctx.lineWidth = 15;
+        let drawing = false;
+
+        canvas.onmousedown = () => drawing = true;
+        canvas.onmouseup = () => drawing = false;
+        canvas.onmousemove = (e) => {
+            if(!drawing) return;
+            ctx.lineTo(e.offsetX, e.offsetY);
+            ctx.stroke();
+        };
+
+        async function send() {
+            const image = canvas.toDataURL('image/png');
+            const resp = await fetch('/predict', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({image})
+            });
+            const data = await resp.json();
+            document.getElementById('res').innerText = "Prediction: " + data.prediction;
+        }
+    </script>
+</body>
+</html>
