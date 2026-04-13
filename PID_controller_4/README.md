@@ -1,75 +1,72 @@
 
 -----
 
-# Experimental Analysis: Multi-Agent PID Stability
+# Multi-Agent PID Stability Analysis
 
 ### Subject: Linear Time-Invariant (LTI) System Compensation
 
 **Lead Researcher:** Samuel Victor Flores  
-**Research Lab:** Agent Kamaka Computational Dynamics Group
+**Technical Specifications:** HP Z840 Workstation | Debian Linux Environment
 
 -----
 
 ## 🔬 Executive Summary
 
-This project investigates the stability and settling characteristics of four discrete test masses ($M_0$ through $M_3$) within a simulated planar coordinate system. By applying variable coefficients to a **Proportional-Integral-Derivative (PID)** feedback loop, we analyze the system's capacity for **Perturbation Rejection** and its return to a defined null equilibrium point.
+This research evaluates the transient response and steady-state stability of a distributed multi-agent system. By utilizing a **Proportional-Integral-Derivative (PID)** control architecture, the study analyzes the efficacy of various damping and restorative coefficients in maintaining a null equilibrium point against external stochastic perturbations.
 
-## 📐 Mathematical Overview
+## 📐 Mathematical Framework
 
-The core physics engine utilizes a discrete-time integrator to solve the second-order differential equation governing each agent:
+The simulation environment utilizes a discrete-time Euler integrator (20Hz) to solve the second-order differential equations governing the kinematic state of each agent ($M_0$–$M_3$).
 
-$$M \ddot{x} + \beta \dot{x} + \alpha x = F_p(t)$$
+### 1\. Governing Equation of Motion
 
-### 1\. Control Force Calculation ($F_c$)
+Each test mass is modeled according to the following dynamic equilibrium:
+$$M \ddot{x} + \beta \dot{x} + \alpha x = F_{ext}(t)$$
+Where $M$ represents system mass, $\beta$ the viscous damping coefficient, and $\alpha$ the restorative stiffness.
+
+### 2\. Feedback Control Signal ($F_c$)
 
 The corrective force is derived from the error signal $e(t) = \text{Target} - \text{Current Position}$:
 
-  * **Proportional ($\alpha$):** $e(t) \cdot K_p$ (Restorative stiffness)
-  * **Integral ($\gamma$):** $\int e(t)dt \cdot K_i$ (Steady-state error elimination)
-  * **Derivative ($\beta$):** $\frac{de}{dt} \cdot K_d$ (Viscous damping)
+  * **Proportional ($\alpha$):** $e(t) \cdot K_p$ modulates the speed of the restorative response.
+  * **Integral ($\gamma$):** $\int e(t)dt \cdot K_i$ eliminates residual steady-state error.
+  * **Derivative ($\beta$):** $\frac{de}{dt} \cdot K_d$ suppresses high-frequency oscillations (ringing).
 
-### 2\. Numerical Snapping & Quenching
+### 3\. Numerical Snapping and State Quenching
 
-To address the "Limit of Zeroes"—the machine epsilon where floating-point errors induce artificial jitter—the system employs a **Hard Threshold Quench**:
+To mitigate numerical instability at the machine epsilon boundary ($10^{-16}$), the system implements a **Hard Threshold Deadband**:
 
-> If the Euclidean magnitude $||e(t)|| \le 0.0001$, the state vectors $[x, v, i]$ are snapped to zero. This simulates physical static friction and prevents numerical divergence during extended runtimes.
-
------
-
-## 🛠 System Architecture
-
-  * **Computational Backend:** A Python/Flask engine performing Euler integration at 20Hz.
-  * **Laboratory UI:** A monochromatic technical report interface designed for high-contrast data visualization.
-  * **Telemetry (Figure 1.0):** Real-time plotting of **Directional Error Magnitude** calculated as $||e(t)|| \cdot \text{sgn}(e_y)$. This allows for precise observation of overshoot and oscillation damping.
+> If $||e(t)|| \le 0.0001$, the state vectors $[x, v, i]$ are programmatically snapped to zero. This simulates physical static friction and ensures a stable steady-state baseline for longitudinal analysis.
 
 -----
 
-## 🎮 User Instructions: Perturbation Mapping
+## 🛠 System Implementation & Telemetry
 
-Researchers can manually induce external forces ($F_p$) to test the compensator's resilience using the following hardware mappings:
+  * **Architecture:** Decoupled Python/Flask computational backend with a high-contrast Laboratory UI.
+  * **Telemetry Mapping:** Figure 1.0 visualizes **Directional Error Magnitude**, defined as $||e(t)|| \cdot \text{sgn}(e_y)$. This polarization allows for the precise observation of overshoot relative to the equilibrium axis.
 
-| Unit | Identification | Primary Control Set |
+-----
+
+## 🎮 Operational Parameters: Perturbation Mapping
+
+Manual perturbations ($F_{ext}$) are induced via localized hardware inputs to test compensatory resilience:
+
+| Agent | Identification | Control Mapping |
 | :--- | :--- | :--- |
-| **Test Mass 0** | $M_0$ (Black) | `W` `A` `S` `D` |
-| **Test Mass 1** | $M_1$ (Dk Gray) | `T` `F` `G` `H` |
-| **Test Mass 2** | $M_2$ (Lt Gray) | `I` `J` `K` `L` |
-| **Test Mass 3** | $M_3$ (White) | **Numpad** `8` `4` `5` `6` |
-
-### Experimental Procedure
-
-1.  **Initialize:** Set Coefficients to baseline: $K_p: 1.07$, $K_d: 0.73$, $K_i: 0.03$.
-2.  **Perturb:** Apply a directional force using the keyboard mapping.
-3.  **Analyze:** Observe Figure 1.0 for the **Rise Time** and **Settling Time**. If "ringing" occurs, increase **Coefficient $\beta$**.
+| **Mass 0** | $M_0$ (Black) | `W` `A` `S` `D` |
+| **Mass 1** | $M_1$ (Dk Gray) | `T` `F` `G` `H` |
+| **Mass 2** | $M_2$ (Lt Gray) | `I` `J` `K` `L` |
+| **Mass 3** | $M_3$ (White) | **Numpad** `8` `4` `5` `6` |
 
 -----
 
 \<div align="center"\>
-\<img src="PID_controller_4/fig1.png" alt="Figure 1.0 Telemetry" width="850"\>
-\<p\>\<i\>Figure 1.0: Real-time telemetry showing directional error magnitude and the execution of the 0.0001 numerical snap.\</i\>\</p\>
+\<img src="PID\_controller\_4/fig1.png" alt="Figure 1.0: Stability Analysis" width="850"\>
+\<p\>\<i\>\<b\>Figure 1.0:\</b\> Transient response telemetry for Agent $M_3$. The plot illustrates the transition from an underdamped state to absolute equilibrium via the 0.0001 numerical snap.\</i\>\</p\>
 \</div\>
 
 -----
 
-### ⚠️ Operational Disclaimer
+### ⚠️ Technical Disclaimer
 
-This simulation is a precursor for hardware-level implementation on **STM32** and **Raspberry Pi** platforms. It accurately models the behavior of Darlington-array driven actuators and the necessity of deadband logic in physical robotics. Avoid continuous operation beyond 60 minutes to prevent cumulative floating-point drift.
+This simulation serves as a computational precursor for hardware-level implementation on **STM32** and **embedded architectures**. The deadband logic successfully models the requirements of Darlington-array driven actuators. Prolonged execution may lead to cumulative floating-point drift; periodic system resets are recommended.
