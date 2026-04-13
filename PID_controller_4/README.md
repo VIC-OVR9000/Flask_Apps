@@ -1,4 +1,15 @@
 
+-----
+
+# Experimental Analysis: Multi-Agent PID Stability
+
+### Subject: Linear Time-Invariant (LTI) System Compensation
+
+**Lead Researcher:** Samuel Victor Flores  
+**Research Lab:** Agent Kamaka Computational Dynamics Group
+
+-----
+
 ## 🔬 Executive Summary
 
 This project investigates the stability and settling characteristics of four discrete test masses ($M_0$ through $M_3$) within a simulated planar coordinate system. By applying variable coefficients to a **Proportional-Integral-Derivative (PID)** feedback loop, we analyze the system's capacity for **Perturbation Rejection** and its return to a defined null equilibrium point.
