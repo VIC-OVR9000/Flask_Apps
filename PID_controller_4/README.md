@@ -60,11 +60,10 @@ Manual perturbations ($F_{ext}$) are induced via localized hardware inputs to te
 
 -----
 
-<div align="center"\>
-<img src="PID\_controller\_4/fig1.png" alt="Figure 1.0: Stability Analysis" width="850"\>
-<p\>\<i\>\<b\>Figure 1.0:\</b\> Transient response telemetry for Agent $M_3$. The plot illustrates the transition from an underdamped state to absolute equilibrium via the 0.0001 numerical snap.\</i\>\</p\>
-</div\>
-
+<div align="center">
+<img src="PID_controller_4/fig1.png" alt="Figure 1.0: Stability Analysis" width="850">
+<p><i><b>Figure 1.0:</b> Transient response telemetry for Agent $M_3$. The plot illustrates the transition from an underdamped state to absolute equilibrium via the 0.0001 numerical snap.</i></p>
+</div>
 -----
 
 ### ⚠️ Technical Disclaimer
