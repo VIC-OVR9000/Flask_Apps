@@ -1,17 +1,3 @@
-To align with your academic transition, we are recontextualizing the "SIA-V Sovereign" narrative elements into a formal **Experimental Research Framework**. The persona of "The Architect" is now the **Principal Investigator**, and the "Fleet" is redefined as a **Distributed Multi-Agent System**.
-
-Below is the refined **README.md** that strips the sci-fi flavor in favor of pure technical documentation, integrating the "Numerical Snapping" logic and your Numpad 8456 control scheme.
-
------
-
-# Experimental Analysis: Multi-Agent PID Stability
-
-### Subject: Linear Time-Invariant (LTI) System Compensation
-
-**Lead Researcher:** Samuel Victor Flores  
-**Research Lab:** Agent Kamaka Computational Dynamics Group
-
------
 
 ## 🔬 Executive Summary
 
