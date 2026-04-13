@@ -112,7 +112,7 @@ The feedback control force ($F_c$) is calculated as:
 $$F_c = (e \cdot K_p) + (\int e \, dt \cdot K_i) + (\frac{de}{dt} \cdot K_d)$$
 
 <p align="center">
-  <img src="path/to/your/figure1.png" width="850" alt="Stability Analysis Graph">
+  <img src="PID_controller_4/Figure1.png" width="850" alt="Stability Analysis Graph">
   <br>
   <b>Figure 1.0:</b> Real-time visualization of directional error and numerical snapping.
 </p>
