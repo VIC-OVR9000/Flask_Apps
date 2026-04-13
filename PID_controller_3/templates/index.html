@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SIA-V Sovereign: Multi-Agent Control</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@300;600&display=swap');
+        body { background-color: #e8dbc5; font-family: 'Crimson Pro', serif; color: #2c2c2c; display: flex; flex-direction: column; align-items: center; padding: 20px; background-image: url('https://www.transparenttextures.com/patterns/paper-fibers.png'); }
+        .journal-container { border: 2px solid #5d534a; padding: 25px; width: 950px; box-shadow: 10px 10px 25px rgba(0,0,0,0.15); background: rgba(232, 219, 197, 0.9); }
+        .control-panel { display: flex; justify-content: space-around; border-bottom: 1px double #5d534a; padding-bottom: 15px; margin-bottom: 15px; }
+        .simulation-frame { width: 100%; height: 450px; background: #fdf6e3; border: 1px inset #5d534a; position: relative; overflow: hidden; }
+        .object { width: 16px; height: 16px; border-radius: 50%; position: absolute; transform: translate(-50%, -50%); border: 1px solid #000; }
+        /* Distinct colors for the fleet */
+        #obj-0 { background: radial-gradient(circle at 30% 30%, #555, #111); }
+        #obj-1 { background: radial-gradient(circle at 30% 30%, #5a7, #131); }
+        #obj-2 { background: radial-gradient(circle at 30% 30%, #75a, #213); }
+        #obj-3 { background: radial-gradient(circle at 30% 30%, #a55, #311); }
+        .origin-cross { position: absolute; top: 50%; left: 50%; width: 40px; height: 40px; border: 0.5px dashed #5d534a; transform: translate(-50%, -50%); pointer-events: none; }
+        .legend { display: flex; justify-content: center; gap: 20px; margin-top: 10px; font-size: 0.8em; }
+        .station {
+    position: absolute;
+    width: 10px; height: 10px;
+    border: 1px solid rgba(93, 83, 74, 0.3);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+}
+    </style>
+</head>
+<body>
+
+<div class="journal-container">
+    <header style="text-align: center; border-bottom: 1px solid #5d534a;">
+        <h1 style="margin: 0;">ADAPTIVE FLEET DYNAMICS</h1>
+        <p><i>Propulsion Research - Object Frames 0-3</i></p>
+    </header>
+
+    <div class="control-panel">
+        <div><label>K-Gain</label><input type="range" id="kp" min="0" max="50" value="10.7" step="0.1"></div>
+        <div><label>K-Damp</label><input type="range" id="kd" min="0" max="30" value="7.3" step="0.1"></div>
+        <div><label>K-Int</label><input type="range" id="ki" min="0" max="20" value="3.0" step="0.1"></div>
+    </div>
+
+    <div class="simulation-frame" id="sim">
+        <div class="origin-cross"></div>
+        <div id="obj-0" class="object"></div>
+        <div id="obj-1" class="object"></div>
+        <div id="obj-2" class="object"></div>
+        <div id="obj-3" class="object"></div>
+        <div class="station" style="left: calc(50% - 180px); top: 50%;"></div>
+        <div class="station" style="left: calc(50% - 60px); top: 50%;"></div>
+        <div class="station" style="left: calc(50% + 60px); top: 50%;"></div>
+        <div class="station" style="left: calc(50% + 180px); top: 50%;"></div>
+               
+    </div>
+
+    <div class="legend">
+        <span><b>Gray:</b> WASD</span> | <span><b>Green:</b> TFGH</span> | 
+        <span><b>Purple:</b> IJKL</span> | <span><b>Red:</b> Arrows</span>
+    </div>
+</div>
+
+<script>
+    const keys = {};
+    window.onkeydown = (e) => keys[e.key] = true;
+    window.onkeyup = (e) => keys[e.key] = false;
+
+    async function loop() {
+        const getDist = (u, l, d, r) => ({
+            x: (keys[r] ? 5 : 0) + (keys[l] ? -5 : 0),
+            y: (keys[d] ? 5 : 0) + (keys[u] ? -5 : 0)
+        });
+
+        const payload = {
+            kp: document.getElementById('kp').value,
+            kd: document.getElementById('kd').value,
+            ki: document.getElementById('ki').value,
+            disturbances: [
+                getDist('w', 'a', 's', 'd'),
+                getDist('t', 'f', 'g', 'h'),
+                getDist('i', 'j', 'k', 'l'),
+                getDist('ArrowUp', 'ArrowLeft', 'ArrowDown', 'ArrowRight')
+            ]
+        };
+
+        const response = await fetch('/update', {
+            method: 'POST', headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(payload)
+        });
+        
+        const data = await response.json();
+        data.forEach(d => {
+            const el = document.getElementById('obj-' + d.id);
+            el.style.left = (475 + d.x) + 'px';
+            el.style.top = (225 + d.y) + 'px';
+        });
+        requestAnimationFrame(loop);
+    }
+    loop();
+</script>
+</body>
+</html>
