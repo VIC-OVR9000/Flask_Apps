@@ -1,46 +1,4 @@
-The **Laboratory Technical Report** interface has been updated to reflect the new control mapping for **Test Mass 3**. The perturbation logic now specifically listens for **Numpad 8, 4, 5, and 6** to drive the vertical and horizontal vectors for the fourth unit.
 
-### Updated Laboratory Interface (`index.html`)
-
-```html
-<div class="legend">
-        <span><b>M0:</b> WASD</span> | <span><b>M1:</b> TFGH</span> | 
-        <span><b>M2:</b> IJKL</span> | <span><b>M3:</b> NUMPAD 8456</span>
-    </div>
-
-<script>
-    // ... [Previous Initialization Code] ...
-
-    async function loop() {
-        const getPerturbation = (u, l, d, r) => ({
-            x: (keys[r] ? 5 : 0) + (keys[l] ? -5 : 0),
-            y: (keys[d] ? 5 : 0) + (keys[u] ? -5 : 0)
-        });
-
-        const payload = {
-            kp: document.getElementById('kp').value,
-            kd: document.getElementById('kd').value,
-            ki: document.getElementById('ki').value,
-            disturbances: [
-                getPerturbation('w', 'a', 's', 'd'),
-                getPerturbation('t', 'f', 'g', 'h'),
-                getPerturbation('i', 'j', 'k', 'l'),
-                // Mapping M3 to Numpad 8 (Up), 4 (Left), 5 (Down), 6 (Right)
-                getPerturbation('8', '4', '5', '6')
-            ]
-        };
-
-        // ... [Remaining Loop and Fetch Logic] ...
-    }
-    loop();
-</script>
-```
-
-### Revised Project Documentation (`README.md`)
-
-The following technical documentation has been revised to reflect the standardized perturbation inputs and the **Temporal Convergence** logic implemented in the backend.
-
----
 
 # Experimental Analysis: Multi-Agent PID Stability
 ### Subject: Linear Time-Invariant (LTI) System Compensation
