@@ -106,5 +106,20 @@ $$Telemetry = ||e(t)|| \cdot \text{sgn}(e_y)$$
 This allows you to see on the chart whether the mass overshot the station (crossing the zero line) or merely approached it from one side.
 
 
+## 📐 Mathematical Overview
+
+The feedback control force ($F_c$) is calculated as:
+$$F_c = (e \cdot K_p) + (\int e \, dt \cdot K_i) + (\frac{de}{dt} \cdot K_d)$$
+
+<p align="center">
+  <img src="path/to/your/figure1.png" width="850" alt="Stability Analysis Graph">
+  <br>
+  <b>Figure 1.0:</b> Real-time visualization of directional error and numerical snapping.
+</p>
+
+### 3. Numerical Snapping & Quenching
+To resolve the "Limit of Zeroes," we implement a hard floor...
+
+
 
 
