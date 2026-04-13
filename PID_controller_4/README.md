@@ -1,125 +1,78 @@
+To align with your academic transition, we are recontextualizing the "SIA-V Sovereign" narrative elements into a formal **Experimental Research Framework**. The persona of "The Architect" is now the **Principal Investigator**, and the "Fleet" is redefined as a **Distributed Multi-Agent System**.
 
-***
+Below is the refined **README.md** that strips the sci-fi flavor in favor of pure technical documentation, integrating the "Numerical Snapping" logic and your Numpad 8456 control scheme.
+
+-----
 
 # Experimental Analysis: Multi-Agent PID Stability
+
 ### Subject: Linear Time-Invariant (LTI) System Compensation
 
-This repository contains a discrete-time simulation environment designed to analyze the stability and settling characteristics of multiple test masses ($M_0$ through $M_3$) under variable compensatory feedback.
+**Lead Researcher:** Samuel Victor Flores  
+**Research Lab:** Agent Kamaka Computational Dynamics Group
 
-## 🔬 Computational Methodology
+-----
 
-The system models the interaction between **Compensatory Feedback** ($F_c$) and **External Perturbation Forces** ($F_p$). Each test mass follows second-order differential dynamics, integrating velocity and position at a 20Hz refresh rate.
+## 🔬 Executive Summary
 
-### Numerical Snapping (The 0.0001 Limit)
-A critical feature of this implementation is the **Surgical Quenching** logic, designed to manage the precision floor of the digital controller:
-
-* **The Threshold:** When the raw error magnitude drops below **0.0001**, the system identifies the mass as having reached its null equilibrium point.
-* **State Override:** To prevent "Machine Epsilon" jitter, the system snaps the mass to the target coordinates ($x, y$) and instantly zero-thresholds the velocity vectors ($v_x, v_y$).
-* **Integral Reset:** The accumulative error integral ($i_x, i_y$) is cleared upon snapping. This prevents "ghost forces" from releasing when the next perturbation is applied.
-
-## 🛠 System Architecture
-
-* **Computational Backend:** A Flask-based engine performing Euler integration. It utilizes directional magnitude calculations—`raw_mag * (ey/abs(ey))`—to provide polarized telemetry for overshoot analysis.
-* **Laboratory Interface:** A formal technical report view featuring an engineering grid and high-fidelity real-time telemetry.
-* **Figure 1.0:** A Chart.js implementation visualizing the directional error magnitude, allowing researchers to observe the damping effect of $\beta$ in real-time.
-
-## 🎮 Operational Procedures
-
-The laboratory allows for independent, real-time perturbations via localized inputs:
-
-| Unit | ID | Identification | Control Mapping |
-| :--- | :--- | :--- | :--- |
-| **Test Mass 0** | $M_0$ | Black | `W` `A` `S` `D` |
-| **Test Mass 1** | $M_1$ | Dk Gray | `T` `F` `G` `H` |
-| **Test Mass 2** | $M_2$ | Lt Gray | `I` `J` `K` `L` |
-| **Test Mass 3** | $M_3$ | White | **Numpad** `8` `4` `5` `6` |
-
-## 📐 Experimental Parameters
-
-* **Coefficient $\alpha$ (P-Gain):** Restorative "stiffness" relative to the target station.
-* **Coefficient $\beta$ (D-Damp):** Viscous friction applied to the derivative of the error to suppress ringing.
-* **Coefficient $\gamma$ (I-Int):** Accumulative feedback used to eliminate steady-state offsets.
-
----
-
-### ⚠️ Operational Note
-The "Numerical Snapping" logic ensures that the system reaches a true rest state. However, researchers should observe the **Figure 1.0** chart for high-frequency oscillations prior to the $0.0001$ snap, as these indicate an underdamped system ($\beta$ is too low).
-
----
-**Lead Researcher:** Samuel Victor Flores (The Architect)  
-**Research Branch:** SIA-V Sovereign Universe Implementation
-
-
-
-## 📘 User Operational Instructions
-
-The simulation is designed as a repetitive step-response experiment. Follow these procedures to analyze the stability of the fleet:
-
-### 1. Initial Setup
-* **Startup:** Ensure the Flask server is running on `port 8011`.
-* **Environment:** Open the browser to the local host. The masses will initialize at $y = -0.0001$ to test immediate low-threshold stability.
-
-### 2. Perturbation Inputs (Inducing Error)
-To study the recovery dynamics, apply external force vectors using the localized control mappings:
-* **Mass 0-2:** Standard WASD, TFGH, and IJKL mappings.
-* **Mass 3:** Use the **Numpad** keys (`8` Up, `4` Left, `5` Down, `6` Right).
-* **Action:** Apply a sustained perturbation to move a mass away from its station, then release to observe the **Settling Time**.
-
-### 3. Tuning the Coefficients
-Adjust the sliders in the **Control Panel** to modify the fleet's personality:
-* **Increase $\alpha$ (P-Gain):** If the mass returns too slowly to the station.
-* **Increase $\beta$ (D-Damp):** If the mass "rings" or oscillates around the station after release.
-* **Increase $\gamma$ (I-Int):** If the mass stops short of the station (Steady-State Error) due to friction or persistent external force.
-
----
-
-## 📐 Mathematical Overview: The Physics Engine
-
-The `app.py` backend functions as a discrete-time integrator for a **Second-Order Linear Time-Invariant (LTI) System**.
-
-
-
-### 1. The Error Signal ($e$)
-The engine calculates the instantaneous displacement from the null equilibrium point:
-$$e(t) = Target - CurrentPosition$$
-
-### 2. The Feedback Control Force ($F_c$)
-The total corrective force applied to the test mass is the sum of three components:
-$$F_c = (e \cdot K_p) + (\int e \, dt \cdot K_i) + (\frac{de}{dt} \cdot K_d)$$
-
-* **Proportional:** Corrects based on current position.
-* **Integral:** Corrects based on accumulated past error (eliminates offset).
-* **Derivative:** Corrects based on predicted future error (provides damping).
-
-### 3. Numerical Snapping & Quenching
-To resolve the **"Limit of Zeroes"** irony, we implement a hard floor for the Euclidean magnitude ($||e(t)|| = \sqrt{e_x^2 + e_y^2}$):
-
-$$\text{If } ||e(t)|| \le 0.0001 \rightarrow \text{Set } [v, i, e] = 0$$
-
-This "Snapping" logic simulates physical static friction. It prevents the controller from attempting to solve for values smaller than the precision limits of the system, effectively quenching all kinetic energy ($E_k = \frac{1}{2}mv^2$) once the mass is "close enough" to be considered at rest.
-
-
-
-### 4. Telemetry Polarity
-The error magnitude shown in **Figure 1.0** is polarized using the sign of the vertical displacement:
-$$Telemetry = ||e(t)|| \cdot \text{sgn}(e_y)$$
-This allows you to see on the chart whether the mass overshot the station (crossing the zero line) or merely approached it from one side.
-
+This project investigates the stability and settling characteristics of four discrete test masses ($M_0$ through $M_3$) within a simulated planar coordinate system. By applying variable coefficients to a **Proportional-Integral-Derivative (PID)** feedback loop, we analyze the system's capacity for **Perturbation Rejection** and its return to a defined null equilibrium point.
 
 ## 📐 Mathematical Overview
 
-The feedback control force ($F_c$) is calculated as:
-$$F_c = (e \cdot K_p) + (\int e \, dt \cdot K_i) + (\frac{de}{dt} \cdot K_d)$$
+The core physics engine utilizes a discrete-time integrator to solve the second-order differential equation governing each agent:
 
-<p align="center">
-  <img src="PID_controller_4/Figure1.png" width="850" alt="Stability Analysis Graph">
-  <br>
-  <b>Figure 1.0:</b> Real-time visualization of directional error and numerical snapping.
-</p>
+$$M \ddot{x} + \beta \dot{x} + \alpha x = F_p(t)$$
 
-### 3. Numerical Snapping & Quenching
-To resolve the "Limit of Zeroes," we implement a hard floor...
+### 1\. Control Force Calculation ($F_c$)
 
+The corrective force is derived from the error signal $e(t) = \text{Target} - \text{Current Position}$:
 
+  * **Proportional ($\alpha$):** $e(t) \cdot K_p$ (Restorative stiffness)
+  * **Integral ($\gamma$):** $\int e(t)dt \cdot K_i$ (Steady-state error elimination)
+  * **Derivative ($\beta$):** $\frac{de}{dt} \cdot K_d$ (Viscous damping)
 
+### 2\. Numerical Snapping & Quenching
 
+To address the "Limit of Zeroes"—the machine epsilon where floating-point errors induce artificial jitter—the system employs a **Hard Threshold Quench**:
+
+> If the Euclidean magnitude $||e(t)|| \le 0.0001$, the state vectors $[x, v, i]$ are snapped to zero. This simulates physical static friction and prevents numerical divergence during extended runtimes.
+
+-----
+
+## 🛠 System Architecture
+
+  * **Computational Backend:** A Python/Flask engine performing Euler integration at 20Hz.
+  * **Laboratory UI:** A monochromatic technical report interface designed for high-contrast data visualization.
+  * **Telemetry (Figure 1.0):** Real-time plotting of **Directional Error Magnitude** calculated as $||e(t)|| \cdot \text{sgn}(e_y)$. This allows for precise observation of overshoot and oscillation damping.
+
+-----
+
+## 🎮 User Instructions: Perturbation Mapping
+
+Researchers can manually induce external forces ($F_p$) to test the compensator's resilience using the following hardware mappings:
+
+| Unit | Identification | Primary Control Set |
+| :--- | :--- | :--- |
+| **Test Mass 0** | $M_0$ (Black) | `W` `A` `S` `D` |
+| **Test Mass 1** | $M_1$ (Dk Gray) | `T` `F` `G` `H` |
+| **Test Mass 2** | $M_2$ (Lt Gray) | `I` `J` `K` `L` |
+| **Test Mass 3** | $M_3$ (White) | **Numpad** `8` `4` `5` `6` |
+
+### Experimental Procedure
+
+1.  **Initialize:** Set Coefficients to baseline: $K_p: 1.07$, $K_d: 0.73$, $K_i: 0.03$.
+2.  **Perturb:** Apply a directional force using the keyboard mapping.
+3.  **Analyze:** Observe Figure 1.0 for the **Rise Time** and **Settling Time**. If "ringing" occurs, increase **Coefficient $\beta$**.
+
+-----
+
+\<div align="center"\>
+\<img src="Figure1.0\_Stability\_Analysis.png" alt="Figure 1.0 Telemetry" width="850"\>
+\<p\>\<i\>Figure 1.0: Real-time telemetry showing directional error magnitude and the execution of the 0.0001 numerical snap.\</i\>\</p\>
+\</div\>
+
+-----
+
+### ⚠️ Operational Disclaimer
+
+This simulation is a precursor for hardware-level implementation on **STM32** and **Raspberry Pi** platforms. It accurately models the behavior of Darlington-array driven actuators and the necessity of deadband logic in physical robotics. Avoid continuous operation beyond 60 minutes to prevent cumulative floating-point drift.
