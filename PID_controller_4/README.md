@@ -64,7 +64,7 @@ Researchers can manually induce external forces ($F_p$) to test the compensator'
 -----
 
 \<div align="center"\>
-\<img src="Figure1.0\_Stability\_Analysis.png" alt="Figure 1.0 Telemetry" width="850"\>
+\<img src="PID_controller_4/fig1.png" alt="Figure 1.0 Telemetry" width="850"\>
 \<p\>\<i\>Figure 1.0: Real-time telemetry showing directional error magnitude and the execution of the 0.0001 numerical snap.\</i\>\</p\>
 \</div\>
 
