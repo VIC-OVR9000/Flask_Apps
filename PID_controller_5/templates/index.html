@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Technical Report: Closed-Loop PID Stability Analysis</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville&family=Roboto+Mono:wght@300&display=swap');
+
+        body { 
+            background-color: #f4f1ea; 
+            font-family: 'Libre Baskerville', serif; 
+            color: #1a1a1a; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            padding: 40px; 
+            line-height: 1.6;
+        }
+
+        .report-container { 
+            border: 1px solid #bcbcbc; 
+            padding: 50px; 
+            width: 950px; 
+            background: #ffffff; 
+            box-shadow: 0 0 20px rgba(0,0,0,0.05);
+        }
+
+        header { 
+            text-align: center; 
+            border-bottom: 2px solid #1a1a1a; 
+            margin-bottom: 30px; 
+            padding-bottom: 10px;
+        }
+
+        h1 { font-variant: small-caps; letter-spacing: 1px; margin: 0; font-size: 1.8em; }
+        
+        .control-panel { 
+            display: flex; 
+            justify-content: space-around; 
+            padding: 20px 0;
+            background: #f9f9f9;
+            border: 1px solid #eee;
+            margin-bottom: 20px;
+            font-family: 'Roboto Mono', monospace;
+            font-size: 0.8em;
+        }
+
+        .param-group { display: flex; flex-direction: column; align-items: center; }
+
+        .simulation-frame { 
+            width: 100%; 
+            height: 400px; 
+            background-color: #ffffff; 
+            background-image: radial-gradient(#d1d1d1 1px, transparent 1px);
+            background-size: 20px 20px;
+            border: 1px solid #1a1a1a; 
+            position: relative; 
+            overflow: hidden; 
+        }
+
+        .test-mass { 
+            width: 12px; 
+            height: 12px; 
+            border-radius: 50%; 
+            position: absolute; 
+            transform: translate(-50%, -50%); 
+            background: #000;
+        }
+
+        /* Test Mass Identifiers */
+        #obj-0 { background: #000000; }
+        #obj-1 { background: #4a4a4a; }
+        #obj-2 { background: #8a8a8a; }
+        #obj-3 { background: #bebebe; }
+
+        .null-equilibrium { 
+            position: absolute; 
+            top: 50%; left: 0%; 
+            width: 100%; height: 1px; 
+            border-top: 1px dashed #bcbcbc; 
+            transform: translateY(0%); 
+            pointer-events: none; 
+        }
+
+        .station {
+            position: absolute;
+            width: 8px; height: 8px;
+            border: 1px solid #000;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+        }
+
+        .widget-container {
+            margin-top: 30px;
+            border-top: 1px solid #1a1a1a;
+            padding-top: 20px;
+        }
+
+        .legend { 
+            display: flex; 
+            justify-content: center; 
+            gap: 20px; 
+            margin-top: 15px; 
+            font-family: 'Roboto Mono', monospace;
+            font-size: 0.75em; 
+            color: #666;
+        }
+
+        input[type=range] { width: 150px; accent-color: #000; }
+    </style>
+</head>
+<body>
+
+<div class="report-container">
+    <header>
+        <h1>Experimental Analysis: Multi-Agent PID Stability</h1>
+        <p style="margin: 5px 0 0 0; font-size: 0.85em;">Subject: Linear Time-Invariant (LTI) System Compensation</p>
+    </header>
+
+    <div class="control-panel">
+        <div class="param-group">
+            <label>Coefficient α (P-Gain)</label>
+            <input type="range" id="kp" min="0" max="50" value="10.7" step="0.1">
+        </div>
+        <div class="param-group">
+            <label>Coefficient β (D-Damp)</label>
+            <input type="range" id="kd" min="0" max="30" value="7.3" step="0.1">
+        </div>
+        <div class="param-group">
+            <label>Coefficient γ (I-Int)</label>
+            <input type="range" id="ki" min="0" max="20" value="3.0" step="0.1">
+        </div>
+    </div>
+
+    <div class="simulation-frame" id="sim">
+        <div class="null-equilibrium"></div>
+        <div id="obj-0" class="test-mass"></div>
+        <div id="obj-1" class="test-mass"></div>
+        <div id="obj-2" class="test-mass"></div>
+        <div id="obj-3" class="test-mass"></div>
+        
+        <div class="station" style="left: calc(50% - 180px); top: 50%;"></div>
+        <div class="station" style="left: calc(50% - 60px); top: 50%;"></div>
+        <div class="station" style="left: calc(50% + 60px); top: 50%;"></div>
+        <div class="station" style="left: calc(50% + 180px); top: 50%;"></div>
+    </div>
+
+    <div class="legend">
+        <span><b>M0:</b> WASD</span> | <span><b>M1:</b> TFGH</span> | 
+        <span><b>M2:</b> IJKL</span> | <span><b>M3:</b> ARROWS</span>
+    </div>
+
+    <div class="widget-container">
+        <h2 style="font-size: 1em; font-variant: small-caps; margin-bottom: 10px;">Figure 1.0: Real-Time Error Magnitude ||e(t)||</h2>
+        <div style="height: 200px; width: 100%;">
+            <canvas id="errorChart"></canvas>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const keys = {};
+    window.onkeydown = (e) => keys[e.key] = true;
+    window.onkeyup = (e) => keys[e.key] = false;
+
+    // Chart.js Initialization
+    const ctx = document.getElementById('errorChart').getContext('2d');
+    const chartData = {
+        labels: Array(60).fill(''),
+        datasets: [
+            { label: 'M0', borderColor: '#000000', data: Array(60).fill(0), borderWidth: 1.5, pointRadius: 0, tension: 0.2 },
+            { label: 'M1', borderColor: '#4a4a4a', data: Array(60).fill(0), borderWidth: 1.5, pointRadius: 0, tension: 0.2 },
+            { label: 'M2', borderColor: '#8a8a8a', data: Array(60).fill(0), borderWidth: 1.5, pointRadius: 0, tension: 0.2 },
+            { label: 'M3', borderColor: '#bebebe', data: Array(60).fill(0), borderWidth: 1.5, pointRadius: 0, tension: 0.2 }
+        ]
+    };
+
+    const errorChart = new Chart(ctx, {
+        type: 'line',
+        data: chartData,
+        options: {
+            animation: false,
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: { 
+                y: { beginAtZero: true, grid: { color: '#eee' }, title: { display: true, text: 'Magnitude (m)', font: { family: 'Roboto Mono' } } },
+                x: { display: false }
+            },
+            plugins: { legend: { display: true, labels: { font: { family: 'Roboto Mono', size: 10 } } } }
+        }
+    });
+
+    async function loop() {
+        const getPerturbation = (u, l, d, r) => ({
+            x: (keys[r] ? 5 : 0) + (keys[l] ? -5 : 0),
+            y: (keys[d] ? 5 : 0) + (keys[u] ? -5 : 0)
+        });
+
+        const payload = {
+            kp: document.getElementById('kp').value,
+            kd: document.getElementById('kd').value,
+            ki: document.getElementById('ki').value,
+            disturbances: [
+                getPerturbation('w', 'a', 's', 'd'),
+                getPerturbation('t', 'f', 'g', 'h'),
+                getPerturbation('i', 'j', 'k', 'l'),
+                getPerturbation('8', '4', '5', '6')
+            ]
+        };
+
+        try {
+            const response = await fetch('/update', {
+                method: 'POST', 
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(payload)
+            });
+            
+            const data = await response.json();
+            data.forEach((d, i) => {
+                const el = document.getElementById('obj-' + d.id);
+                // Grid Center Mapping
+                el.style.left = (475 + d.x) + 'px';
+                el.style.top = (200 + d.y) + 'px';
+
+                // Update Dataset for magnitude (requires server-side calculation of error_mag)
+                chartData.datasets[i].data.push(d.error_mag || 0);
+                chartData.datasets[i].data.shift();
+            });
+            errorChart.update('none');
+        } catch (e) {
+            console.error("Communication failure with computational backend.");
+        }
+        requestAnimationFrame(loop);
+    }
+    loop();
+</script>
+</body>
+</html>
