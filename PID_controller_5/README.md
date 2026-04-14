@@ -27,4 +27,4 @@ While this engine provides superior "weight" and "intent" compared to standard l
 ---
 **Lead Developer:** Samuel Victor Flores  
 **Project Status:** Active Engineering Phase (LTI Foundation Secured)  
-**System Origin:** Blanco, Texas | HP Z840 Debian Environment
+**System Origin:** Blanco, Texas | BEELINK MSFT WINDOWS 11 / HP Z840 Debian Environment
