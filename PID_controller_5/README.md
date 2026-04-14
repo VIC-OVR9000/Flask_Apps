@@ -1,4 +1,3 @@
-This refined notice explicitly bridges the gap between your academic research and the future commercial potential of the **Flores Game & Simulation Engine**. It establishes a clear legal perimeter around the "Intent-Based" physics architecture you've developed on your Z840.
 
 ---
 
